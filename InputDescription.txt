@@ -1,0 +1,82 @@
+INPUT DESCRIPTION FOR THE IEC WIND GENERATING PROGRAM IECWind v5.10
+
+  All inputs are required and will be sanity-checked.  For some wind conditions
+some inputs are not needed, but they must be there and of acceptable value in any
+case.
+
+  The first two lines are title lines that can be used to describe the contents
+of the file for your convenience.  These lines are ignored by the program.
+
+  The third line defines whether the input and output are SI or English units.
+TRUE defines SI, while FALSE defines English units.  The input and output
+units must be the same.  IECWind does not do conversions.
+
+  The fourth line defines the time in seconds for constant wind before the start
+of the IEC condition.  This allows the turbine to stabilize before the start of
+the transient condition.  This is not applicable to steady EWM or NWP conditions.
+
+The fifth line is a comment line.  It is ignored by the program.
+
+  The sixth line contains the wind turbine class, 1, 2, or 3, as specified in
+the IEC standard.
+
+  The seventh line identifies the wind turbulence category (should be either
+A, B or C).
+
+  The eighth line holds the angle of the inflow to the rotor.  The IEC standard
+(section 6.3) specifies a maximum inclination of 8 degrees with respect to the
+horizontal.  This angle is assumed invariant with height.  IECWind will print a
+warning to the screen for angles exceeding 8 degrees absolute value, though it
+will allow you to use them.
+
+The ninth line is a comment line.  It is ignored by the program.
+
+  The tenth and eleventh lines list the wind turbine hub-height and diameter,
+respectively, used to determine the turbulence scale parameter and severity of gusts,
+direction changes and shears.  IECWind checks that the hub-height is greater than
+half the diameter, and that the diameter is greater than zero.
+
+  The twelfth through fourteenth lines list the cut-in, rated, and cut-out wind
+speeds for the turbine in that order.  IECWind checks that these progressively
+increase as they should.
+
+  The fifteenth line is a comment line.  It is ignored by the program.
+
+  Below the fifteenth line, any number (up to 150) of wind conditions can be
+listed - one per line - for IECWind to generate.  The allowable names are
+defined in Table 1 below.  You will get as many wind files as conditions
+you request here.  If you list none, you get none.
+
+	    Table 1: Summary of IEC Conditions
+
+IEC Condition     Time duration       Sign        Hub-Height         IEC DLC
+                   of transient:                  Wind Speed
+
+ECD+r-n.n           10 sec             +          rated -n.n(<=2m/s)  1.4
+ECD-r-n.n           10 sec             -          rated -n.n(<=2m/s)  1.4
+ECD+r               10 sec             +          rated               1.4
+ECD-r               10 sec             -          rated               1.4
+ECD+r+n.n           10 sec             +          rated +n.n(<=2m/s)  1.4
+ECD-r+n.n           10 sec             -          rated +n.n(<=2m/s)  1.4
+EWSV+nn.n           12 sec             NA         >in, <out           1.5
+EWSV-nn.n           12 sec             NA         >in, <out           1.5
+EWSH+nn.n           12 sec             +          >in, <out           1.5
+EWSH-nn.n           12 sec             -          >in, <out           1.5
+EOGi                10.5 sec           NA         cut-in              3.2
+EOGr+n.n            10.5 sec           NA         rated +n.n(<=2m/s)  2.3, 3.2, 4.2
+EOGr-n.n            10.5 sec           NA         rated -n.n(<=2m/s)  2.3, 3.2, 4.2
+EOGo                10.5 sec           NA         cut-out             2.3, 3.2, 4.2
+EDC+i               6  sec             +          cut-in              3.3
+EDC-i               6  sec             -          cut-in              3.3
+EDC+r+n.n           6  sec             +          rated +n.n(<=2m/s)  3.3
+EDC-r+n.n           6  sec             -          rated +n.n(<=2m/s)  3.3
+EDC+r-n.n           6  sec             +          rated -n.n(<=2m/s)  3.3
+EDC-r-n.n           6  sec             -          rated -n.n(<=2m/s)  3.3
+EDC+o               6  sec             +          cut-out             3.3
+EDC-o               6  sec             -          cut-out             3.3
+NWPnn.n             NA                 NA         >in, <out           4.1
+EWM50               NA                 NA         NA                  6.2
+EWM01               NA                 NA         NA                  6.3, 7.1
+
+NOTE:  nn indicates a 2-digit integer wind speed that must be specified (e.g., "NWP07")
+       The precision shown must be used.

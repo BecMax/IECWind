@@ -1,0 +1,121 @@
+CHANGES.LOG for IECWind
+
+09/10/97
+Eliminated VAVE as it is only necessary in defining
+the wind turbine class and not the wind conditions.
+Allow use of lowercase argument for CATG.  Eliminate
+unused dummy arguments.  Added titles and column
+headings to wind files.  Reorganized input files to put
+direction at the end.  Placed conditional read on direction
+specifier to read only if program requires it.  Changed
+direction specifier to be a + or -.  Changed units
+specifier to a character variable to read SI or ENGLISH.
+
+____________________________
+09/11/97
+Updated descriptions in sample input file.  Put in an inquire
+for the existence of the input file.  Added POS and NEG to
+the end of output file prefixes where appropriate.
+
+____________________________
+10/28/97 version 2.0
+
+Eliminated the end time and set a default value of 600 seconds.
+
+Added vertical wind component via an inclination angle.
+
+Added ALL option to generate up to 25 wind files at once (including
+positive and negative directions and shears, both 1 and 50 year
+recurrence intervals, and both rated and cut-out wind speeds) for the
+specified turbine class, turbulence category, and inclination angle.
+
+Changed wind file naming convention to indicate the recurrence interval,
+wind or shear direction, and wind speed (rated or cut-out).
+
+Changed order of input file.  Made program more robust through use of
+condition directed reads (i.e., if the parameter is not necessary for
+the particular session, it is simply passed over, thus avoiding any
+unwarranted errors on unused parameters).
+
+Added statistics about each wind file at the beginning of the file.
+
+Added the option "BOTH" to the sign indicator in the input file.
+
+____________________________
+03/23/98 version 3.0
+
+Added linear vertical shear column to all cases for compatibility with
+YawDyn v11.0.  Moved the column heading lines to a subroutine as these
+are universal to all wind files.
+
+____________________________
+07/22/98 version 4.0
+
+Updated definitions of some cases and added turbine dimensions to input
+file as per changes made to IEC 61400-1 ed. 2.
+
+____________________________
+07/27/99 version 4.1
+
+Added ability to use values greater than 8 degrees for wind inclination.
+
+____________________________
+08/05/99 version 4.11  M. Buhl
+
+Added the compilation date to the version number in the output files.
+
+_________________________________
+19-Jun-2001 version 4.12  M. Buhl
+
+I modified several routines so that the resulting files don't generate
+warning messages in AeroDyn.  The routines were: EDC50(), EWM01(), and
+EWM50().
+
+_________________________________
+22-Jul-2005 version 5.00  D. Laino
+
+I modified the definitions of the wind events to reflect those of
+Edition 3 of the 61400-1 standard.  Also updated code to Fortran90.
+The input file has changed.  See InputDescription.txt.
+
+_________________________________
+31-Aug-2005 version 5.10  D. Laino
+
+Brandon Gerber of GE Wind pointed out that the IEC standard specifies
+"a wind speed range" and not the discrete +2 or -2 m/s coded in the
+program.  To accomodate this, modifications were made to the naming
+scheme of wind conditions in the input file, as well as the resulting
+output file names.  I also allowed higher resolution on wind speeds
+by adding a decimal.  See InputDescription.txt for the new naming
+scheme.  I also added more robust error checking on the inputs.  I
+changed the code so input file names that use wind speeds can be
+specified in English units (ft/s) for those who still wish to use those.
+I realize the listing of wind conditions could be more user friendly,
+and I plan to make it so in a future version.
+
+_________________________________
+Unknown version for J. Jonkman's dissertation
+Added the input option to specify either the -1 or -3 (offshore)
+ standard for wind shear.
+
+____________________________________
+16-Mar-2010 version 5.01.01  M. Buhl
+
+I deleted unused declared variables.
+Yinping Yang pointed out that the header information for the EOG files did not
+correctly reflect the resulting time series.  On the call to GustHead() in
+GenEOG(), I changed the second argument from Vgust to 2*3.7*Vgust and the last
+argument from T1+T to T1+0.5*T so that the peak of the gust was output instead
+of the end.  I increased the precision on the values in the header to be the
+same as it is for the time series.
+I changed the version numbering scheme to the new standard.  This is equivalent
+to v5.11.
+The IEC standard (1 or 3) determines the shear exponent (Alpha) now, as it is
+different for the two standards.
+
+____________________________________
+2012-09-13 v5.01.02  M. Buhl
+
+On 2012-09-11, Rebecca Sykes of Lloyd's Register Group Services Limited reported
+that I had incorrectly changed a 0.2 in the calculation of ShrMax to Alpha, the
+wind shear exponent.  Oops!  I put it back the way it was originally.
