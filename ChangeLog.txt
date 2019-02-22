@@ -119,3 +119,8 @@ ____________________________________
 On 2012-09-11, Rebecca Sykes of Lloyd's Register Group Services Limited reported
 that I had incorrectly changed a 0.2 in the calculation of ShrMax to Alpha, the
 wind shear exponent.  Oops!  I put it back the way it was originally.
+
+____________________________________
+2019-02-22 v5.02.00  Max Becker of Deutsche Windguard
+
+Added S-class as an option and with it two additional inputs (TI and Vref) to .ipt file

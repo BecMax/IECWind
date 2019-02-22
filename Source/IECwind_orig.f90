@@ -34,16 +34,16 @@ REAL           Ve50				!50-year reference extreme wind speed
 REAL           Vin				!Cut-in wind speed
 REAL           Vout				!Cut-out wind speed
 REAL           Vrated			!Rated wind speed
-REAL           Vref(4)
+REAL           Vref(3)
 
 CHARACTER( 1)  CATG				!Turbulence category
 CHARACTER( 1)::TAB = CHAR(9)	!TAB character
 CHARACTER( 9)  WindFile(150)    !String indicating the IEC condition(s) to generate
-CHARACTER(21)::VERSION = '5.02.00 (22-Feb-2019)' ! Program version stamp
+CHARACTER(21)::VERSION = '5.01.02 (13-Sep-2012)' ! Program version stamp
 
 LOGICAL        SIUnit           !Units logical
 
-DATA Vref /50., 42.5, 37.5, 0.0/
+DATA Vref /50., 42.5, 37.5/
 
 END Module Params
 
@@ -150,31 +150,25 @@ IF ( IOS < 0 )  THEN
    CALL PremEOF ( FileName , 'line 5 header' )
 ENDIF
 
-! Read in the wind turbine class: 1, 2, 3 or S
+! Read in the wind turbine class: 1, 2, or 3
 READ(IFile,*,IOSTAT=IOS) WTC
 IF ( IOS < 0 )  THEN
    CALL PremEOF ( FileName , 'wind turbine class' )
 ENDIF
 
 
-! Check that the wind turbine class is 1, 2, 3 or 4
-IF (WTC .GT. 4 .OR. WTC .LT. 1) THEN
+! Check that the wind turbine class is 1, 2, or 3
+IF (WTC .GT. 3 .OR. WTC .LT. 1) THEN
    !Write(*,'(A,I1,A)'),'The turbine class read was: "',WTC,'".'
-   PRINT*,'The turbine class must be 1, 2, 3 or 4 for S-Class'
+   PRINT*,'The turbine class must be 1, 2, or 3.'
    PRINT*,'Check your input file.'
    STOP
 ENDIF
 
-! Read in the wind turbine category: A, B, C or S
+! Read in the wind turbine category: A, B or C
 READ(IFile,"(A1)",IOSTAT=IOS) CATG
 IF ( IOS < 0 )  THEN
    CALL PremEOF ( FileName , 'wind turbulence class' )
-ENDIF
-
-! Read in the turbulence intensity for an S-class
-READ(IFile,*,IOSTAT=IOS) TurbI
-IF ( IOS < 0 )  THEN
-   CALL PremEOF ( FileName , 'turbulence intensity for S-class' )
 ENDIF
 
 ! Set the turbulence intensity and slope parameters for the category
@@ -184,19 +178,11 @@ ELSEIF(CATG .EQ. 'B' .or. CATG .EQ. 'b') THEN
    TurbI = 0.14
 ELSEIF(CATG .EQ. 'C' .or. CATG .EQ. 'c') THEN
    TurbI = 0.12
-ELSEIF(CATG .EQ. 'S' .or. CATG .EQ. 's') THEN
-   TurbI = 0.01*TurbI
 ELSE
    PRINT*,'The turbulence category read was: "'//CATG//'".'
-   PRINT*,'The turbulence category must be A, B, C or S.'
+   PRINT*,'The turbulence category must be A, B, or C.'
    PRINT*,'Check your input file.'
    STOP
-ENDIF
-
-! Read in the Vref for an S-class
-READ(IFile,*,IOSTAT=IOS) Vref(4)
-IF ( IOS < 0 )  THEN
-   CALL PremEOF ( FileName , 'Vref for S-class' )
 ENDIF
 
 ! Read in the inflow angle
@@ -253,8 +239,6 @@ IF ( IOS < 0 )  THEN
    CALL PremEOF ( FileName , 'turbine diameter' )
 ENDIF
 
-PRINT*,HH
-PRINT*,DIA
 !Check that the turbine hub-height is at least as large as the diameter
 IF (HH .LE. DIA/2.0)THEN
    PRINT*,'The hub-height should be greater than the turbine diameter.'
@@ -377,8 +361,6 @@ IF(HH .GE. 60)TurbScale = 42.
 TurbRat = Dia/TurbScale
 
 ! Calculate the reference extreme wind speeds
-
-
 Ve50 = 1.4 * Vref(WTC)
 Ve1  = 0.8 * Ve50
 
